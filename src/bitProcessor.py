@@ -41,7 +41,10 @@ def getASCIIcode(character):
     LSB de 'int'
 '''
 def getLSB(int):
-    return int|0
+    if(int|0 == 0):
+        return '0'
+    else:
+        return '1'
 
 '''Recibe un caracter para entragar su codigo ASCII en binario
 
