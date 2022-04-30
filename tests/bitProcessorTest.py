@@ -1,5 +1,3 @@
-#Test para el modulo 'bitProcessor'
-
 """
 Pruebas unitarias para corroborar el correcto funcionamiento de 'procesadorBitsTest'
 @author MarioLetepichia
@@ -48,4 +46,4 @@ class BitsTest(unittest.TestCase):
         self.assertFalse(binary == bit.modifyLSB(binary, 1))
     
 if __name__ == '__main__':
-    unittest.main()
+   unittest.main()

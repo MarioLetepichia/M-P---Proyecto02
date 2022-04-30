@@ -41,15 +41,23 @@ def hideMessage(img, textList, resultImg):
             pixel1 = png.getpixel((x,y))
             pixel2 = png.getpixel((n,m))
             newPixels = modifyPixels(pixel1, pixel2, symbol)
+            #DEBUG
+            print('===============')
+            print(' (x,y)   (n,m)')
+            print((x,y), (n,m))
+            print(pixel1, pixel2)
+            print('---------------')
+            print(newPixels[0], newPixels[1])
+            print(symbol + '   ' + bit.getASCIIcharacter(symbol))
             copy.putpixel((x,y), newPixels[0])
             copy.putpixel((n,m), newPixels[1])
             x+= 2
             if(x >= width):
-                x = 0
+                x = x%width
                 y += 1
             n += 2
             if(n >= width):
-                n = 0
+                n = n%width
                 m += 1
             if(m >= height or y >= height):
                 print("Ya no quedan mas pixeles por procesar.")
@@ -88,11 +96,11 @@ def readMessage(img, resultText):
             text += finalChar
         x += 2
         if(x >= width):
-            x = 0
+            x = x%width
             y += 1
         n += 2
         if(n >= width):
-            n = 0
+            n = n%width
             m +=1
         if(m >= height or y >= height):
             print("Ya no quedan mas pixeles por procesar.")
