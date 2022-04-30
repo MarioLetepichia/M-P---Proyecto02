@@ -41,7 +41,7 @@ def getASCIIcode(character):
     LSB de 'int'
 '''
 def getLSB(int):
-    if(int|0 == 0):
+    if(int&1 == 0):
         return '0'
     else:
         return '1'
@@ -74,10 +74,14 @@ def asciiToBinary(currCharacter):
     ----------
     int: Numero que sera modificado
     newLSB: Estado deseado del LSB de 'int'
+
+    Returns
+    -------
+    Numero, en bits, modificado
 '''
 def modifyLSB(int, newLSB):
     #Hay que encender el bit
-    if(newLSB == 1):
+    if(newLSB == '1'):
         return int|0b00000001
     else:
         return int&0b11111110

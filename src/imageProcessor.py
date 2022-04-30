@@ -1,39 +1,48 @@
+"""
+Modulo encargado de procesar la imagen para ocultar texto o descifrarlo
+@author MarioLetepichia
+"""
 from PIL import Image
 import bitProcessor as bit
 
+'''Lee un archivo imagen
+
+    Parameters
+    ----------
+    img: Dirreccion de la imagen
+
+    Returns
+    -------
+    Objeto 'Image' con el cual se podra procesar a 'img'
+'''
 def readImage(img):
     if(img[len(img)- 4:len(img)] != '.png'):
         raise FileNotFoundError
     return Image.open(img)
 
-def hideMessage(img, textList, resultImgDir):
-    #El procesamiento sera dos pixeles por caracter
+'''Oculta un texto en la imagen utilizando estenografia por LSB
+
+    Parameters
+    ----------
+    img: Direccion de la imagen
+    textList: Texto a procesar, se espera una lista donde cada elemento sea una linea del texto
+    resultImg: Direccion donde se desea guardar la imagen resultante
+'''
+def hideMessage(img, textList, resultImg):
     png = readImage(img)
     width = png.width
     height = png.height
     copy = png.copy()
-    x, y, m, n= 0 , 0 , 0, 1
+    x, y, n, m= 0 , 0 , 1, 0
     for i in range(len(textList)):
         line = textList[i]
         for j in range(len(line)):
             symbol = bit.asciiToBinary(line[j])
-            #Saco los dos primeros pixeles
             pixel1 = png.getpixel((x,y))
             pixel2 = png.getpixel((n,m))
-            #los modifico
-            red1 = bit.modifyLSB(pixel1[0], symbol[0])
-            green1 = bit.modifyLSB(pixel1[1], symbol[1])
-            blue1 = bit.modifyLSB(pixel1[2], symbol[2])
-            transparency1 = bit.modifyLSB(pixel1[3], symbol[3])
-            newPixel1 = (red1, green1, blue1, transparency1)
-            red2 = bit.modifyLSB(pixel2[0], symbol[4])
-            green2 = bit.modifyLSB(pixel2[1], symbol[5])
-            blue2 = bit.modifyLSB(pixel2[2], symbol[6])
-            transparency2 = bit.modifyLSB(pixel2[3], symbol[7])
-            newPixel2 = (red2, green2, blue2, transparency2)
-            copy.putpixel((x,y), newPixel1)
-            copy.putpixel((n,m), newPixel2)
-            #actualizo correctamente los indices x,y,n,m
+            newPixels = modifyPixels(pixel1, pixel2, symbol)
+            copy.putpixel((x,y), newPixels[0])
+            copy.putpixel((n,m), newPixels[1])
             x+= 2
             if(x >= width):
                 x = 0
@@ -45,29 +54,38 @@ def hideMessage(img, textList, resultImgDir):
             if(m >= height or y >= height):
                 print("Ya no quedan mas pixeles por procesar.")
                 print(symbol)
-    copy.save(resultImgDir)
+    pixel1 = png.getpixel((x,y))
+    pixel2 = png.getpixel((n,m))
+    newPixels = modifyPixels(pixel1, pixel2, "00000000")
+    copy.putpixel((x,y), newPixels[0])
+    copy.putpixel((n,m), newPixels[1])
+    copy.save(resultImg)
 
+'''Procesa una imagen para recuperar los LSB y generar un texto a partir de ellos.
+
+    Parameters
+    ----------
+    img: Direccion de la imagen
+    resultText: Direccion en la que se desea guardar el texto resultante
+'''
 def readMessage(img, resultText):
-    #Se leen pixeles de dos en dos
-    text = ' '
+    text = ''
     png = readImage(img)
     width = png.width
     height = png.height
-    x, y, m, n= 0 , 0 , 0, 1
+    x, y, n, m= 0 , 0 , 1, 0
     characterBin = '1'
-    while(characterBin != "00000000"):
-        #Obtenemos los pixeles
+    while(characterBin != '00000000'):
         pixel1 = png.getpixel((x,y))
         pixel2 = png.getpixel((n,m))
-        print(pixel1)
-        print(pixel2)
-        #Leemos el contenido de cada uno de ellos
         characterBin = ''
         for i in range(4):
             characterBin += bit.getLSB(pixel1[i])
         for i in range(4):
             characterBin += bit.getLSB(pixel2[i])
-        text += bit.getASCIIcharacter(characterBin)
+        finalChar = bit.getASCIIcharacter(characterBin)
+        if(ord(finalChar) != 0):
+            text += finalChar
         x += 2
         if(x >= width):
             x = 0
@@ -83,4 +101,24 @@ def readMessage(img, resultText):
     file2write.write(text)
     file2write.close()
 
-##No estoy seguro si los pixeles estan siendo modificados correctamente
+'''Modifica los LSB de los bits dentro de los pixeles recibidos para almacenar
+un codigo ASCII. Para esto necesita dos pixeles
+
+    Parameters
+    ----------
+    p1: Pixel #1 a procesar
+    p2: Pixel #2 a procesar
+    symb: Representacion binaria del codigo ASCII que se almanecera en 'p1' y 'p2'
+'''
+def modifyPixels(p1, p2, symb):
+    red1 = bit.modifyLSB(p1[0], symb[0])
+    green1 = bit.modifyLSB(p1[1], symb[1])
+    blue1 = bit.modifyLSB(p1[2], symb[2])
+    transparency1 = bit.modifyLSB(p1[3], symb[3])
+    newPixel1 = (red1, green1, blue1, transparency1)
+    red2 = bit.modifyLSB(p2[0], symb[4])
+    green2 = bit.modifyLSB(p2[1], symb[5])
+    blue2 = bit.modifyLSB(p2[2], symb[6])
+    transparency2 = bit.modifyLSB(p2[3], symb[7])
+    newPixel2 = (red2, green2, blue2, transparency2)
+    return [newPixel1, newPixel2]
