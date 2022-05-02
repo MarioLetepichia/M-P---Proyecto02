@@ -52,7 +52,7 @@ cd
 ```bash
 python3 src/main.py
 ```
-3. Una vez hecho, se abrira una interfaz lista para usar el programa 🙈🙉
+3. Una vez hecho, se abrira una interfaz lista para usar el programa 
 
 
 
