@@ -9,7 +9,7 @@ sys.path.append('src')
 import bitProcessor as bit
 
 class BitsTest(unittest.TestCase):
-    def asciiToBinaryTest(self):
+    def testAsciiToBinary(self):
         #Cuando recibe un int & bool
         a = 5
         try:
@@ -27,23 +27,25 @@ class BitsTest(unittest.TestCase):
             binArray.append(bit.asciiToBinary(word[i]))
             
         for j in range(0,len(word)):
-            if(bin(wordBinaries[i]) != bit.asciiToBinary(word[i])):
+            if(format(wordBinaries[i], '08b') != bit.asciiToBinary(word[i])):
                 raise AssertionError
 
-    def modifyLSBTest(self):
+    def testModifyLSB(self):
         #El binario recibido tiene que tener exactamente len()=10
-        self.assertRaises(ValueError, bit.modifyLSB("hola"))
-        self.assertRaises(ValueError, bit.getASCII("0b1111101111101"))
+        try:
+            bit.modifyLSB("hola", "adios")
+            raise AssertionError
+        except ValueError:
+            pass
         #El LSB ya tiene el valor indicado por 'newLSB'
-        binary = "0b1011101101"
-        self.assertTrue(bit.modifyLSB(binary, 1) == binary)
-        binary = "0b1011100000"
-        self.assertTrue(bit.modifyLSB(binary, 0) == binary)
+        numberEx = 186
+        self.assertTrue(bit.modifyLSB(numberEx, '1') == numberEx + 1)
+        numberEx = 185
+        self.assertTrue(bit.modifyLSB(numberEx, '0') == numberEx - 1)
         #Modifica el valor original
-        binary = "0b1011101101"
-        self.assertFalse(binary == bit.modifyLSB(binary, 0))
-        binary = "0b1011101000"
-        self.assertFalse(binary == bit.modifyLSB(binary, 1))
-    
+        self.assertFalse(numberEx == bit.modifyLSB(numberEx, '0'))
+        numberEx = 156
+        self.assertFalse(numberEx == bit.modifyLSB(numberEx, '1'))
+
 if __name__ == '__main__':
    unittest.main()

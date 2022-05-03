@@ -72,16 +72,18 @@ def asciiToBinary(currCharacter):
 
     Parameters
     ----------
-    int: Numero que sera modificado
+    modifiedInt: Numero que sera modificado
     newLSB: Estado deseado del LSB de 'int'
 
     Returns
     -------
     Numero, en bits, modificado
 '''
-def modifyLSB(int, newLSB):
+def modifyLSB(modifiedInt, newLSB):
+    if(type(modifiedInt) != int or type(newLSB) != str):
+        raise ValueError
     #Hay que encender el bit
     if(newLSB == '1'):
-        return int|0b00000001
+        return modifiedInt|0b00000001
     else:
-        return int&0b11111110
+        return modifiedInt&0b11111110

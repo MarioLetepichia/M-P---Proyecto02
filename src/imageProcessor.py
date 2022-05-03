@@ -25,11 +25,13 @@ def readImage(img):
     Parameters
     ----------
     img: Direccion de la imagen
-    textList: Texto a procesar, se espera una lista donde cada elemento sea una linea del texto
+    text: Direccion del texto a ocultar
     resultImg: Direccion donde se desea guardar la imagen resultante
 '''
-def hideMessage(img, textList, resultImg):
+def hideMessage(text, img, resultImg):
     png = readImage(img)
+    with open(text) as f:
+        textList = f.readlines()
     width = png.width
     height = png.height
     copy = png.copy()
