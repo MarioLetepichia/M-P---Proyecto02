@@ -1,3 +1,7 @@
+"""
+Modulo encargado de generar la interfaz y de llamar las funciones necesrias casa que se oprime un botón.
+@author MarioLetepichia
+"""
 from distutils import dir_util
 import tkinter
 from PIL import ImageTk, Image
@@ -42,7 +46,7 @@ def ocultar_procesar():
 
     '''Esconde el mensaje secreto en una imagen y procesa esa imagen nueva  con el mensaje oculto'''
     global dirname_adress
-    name=textExample.get("1.0","end")
+    name=textName.get("1.0","end")
     name=name.rstrip()
     if(name == ""):
         messagebox.showinfo("!", "No ingresaste nombre del archivo, no se ha procesado la imagen:")
@@ -52,7 +56,7 @@ def ocultar_procesar():
     dirname_adress = filedialog.askdirectory(initialdir="/",  title='selecciona donde quieres guardar la nueva imagén')
     print(dirname_adress)
     dirname_adress= dirname_adress+"/"+name
-    hideMessage(img_adress,file_adress,dirname_adress)
+    hideMessage(file_adress,img_adress,dirname_adress)
     messagebox.showinfo("", "El texto ha sido ocultado en la imagen,se encuentra en la ruta:"+dirname_adress)
    
 
@@ -65,19 +69,27 @@ def cargar_imagen_():
 
 def cargarMensajeSecreto():
 
+
     ''' Apartir una imagen ya gruadad que contiene un mesnsaje secreto oculto , lo decifra y lo guarda en un nuevo archivo .txt'''
-    messagebox.showinfo("intrucciones", "A continuación eligiras la dirección del directorio que deseas generar el nuevo archivo , para ponerle nombre al nuevo archivo, despues del último / agrega el nombre y recuerda ponerle terminación .txt")
-    #new_text_adress = filedialog.askopenfilename(title="selecciona donde deseas guardar el texto con el menaje develado")
+    name2=textName2.get("1.0","end")
+    name2=name2.rstrip()
+    if(name2 == ""):
+        messagebox.showinfo("!", "No ingresaste nombre del archivo, no se ha procesado el archivo:")
+        return
+    messagebox.showinfo("intrucciones", "A continuación eligiras la dirección del directorio que deseas generar el nuevo archivo")
     new_text_adress  = filedialog.askdirectory(initialdir="/",  title='selecciona donde deseas guardar el texto mas el nombre del archivo')
+
+    new_text_adress = new_text_adress+"/"+name2
     #mandar a llamar readMessage
     # file_Secret = llamar metodo de mario pra obtener new file texto_develado
     
-    #text = open(file_adress, "r")
-    #ines = text.read()
-    #text_box.insert(tkinter.END,lines)
+  
     readMessage(img_with_secret_adress,new_text_adress)
+  
     text_box.delete("1.0", "end") 
-    text_box.insert(tkinter.END,"mensaje secreto")
+    text = open(new_text_adress, "r")
+    lines = text.read()
+    text_box.insert(tkinter.END,lines)
     text_box.pack()
     print(new_text_adress)
 
@@ -123,18 +135,26 @@ btn_text = tkinter.Button(tabOcultar, text="Abrir texto",command=insert_text)
 btn_text.place(relx=0.22,rely=0.1,relwidth=0.13,relheight=0.08)
 btn_hide = tkinter.Button(tabOcultar, text="Ocultar mensaje y generar imagén",command=ocultar_procesar)
 btn_hide.pack(side=tkinter.BOTTOM)
-textExample=tkinter.Text(tabOcultar, height=1.5, width=29)
-textExample.pack(side=tkinter.BOTTOM )
+textName=tkinter.Text(tabOcultar, height=1.5, width=29)
+textName.pack(side=tkinter.BOTTOM )
 indicaciones = "Ingresa el nombre del nuevo archivo de la imagen, recuerda poner la extensión .png"
 indicacionesLabel = tkinter.Label(tabOcultar,text=indicaciones,justify=tkinter.LEFT).pack(side=tkinter.BOTTOM)
 
 modalidadOcultar = "Modalidad develar"
 ocultarLabel = tkinter.Label(tabDevelar,text=modalidadOcultar ,font="Arial 26").pack(side=tkinter.TOP)
+indicaciones2 = "Asegurate de que la imagen a ingresar tenga un mensaje oculto "
+indicacionesLabe2 = tkinter.Label(tabDevelar,text=indicaciones2).pack()
 btn_hide = tkinter.Button(tabDevelar, text="Abrir imagen con mensaje oculto",command=cargar_imagen_)
 btn_hide.pack(side=tkinter.TOP)
+indicaciones3 = "Ingresa el nombre del nuevo archivo del mensaje develado, recuerda poner la extensión .txt"
+indicacionesLabe3 = tkinter.Label(tabDevelar,text=indicaciones3).pack()
+textName2 =tkinter.Text(tabDevelar, height=1, width=30)
+textName2.pack()
 btn_hide = tkinter.Button(tabDevelar, text="Develar mensaje",command=cargarMensajeSecreto)
 btn_hide.pack(side=tkinter.TOP)
 text_box =tkinter.Text(tabDevelar, height=10, width=30)
+# textExample2=tkinter.Text(tabOcultar, height=1.5, width=29)
+# textExample.pack()
 
 
 
