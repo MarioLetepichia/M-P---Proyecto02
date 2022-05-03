@@ -45,11 +45,11 @@ def hideMessage(img, textList, resultImg):
             copy.putpixel((n,m), newPixels[1])
             x+= 2
             if(x >= width):
-                x = 0
+                x = x%width
                 y += 1
             n += 2
             if(n >= width):
-                n = 0
+                n = n%width
                 m += 1
             if(m >= height or y >= height):
                 print("Ya no quedan mas pixeles por procesar.")
@@ -88,11 +88,11 @@ def readMessage(img, resultText):
             text += finalChar
         x += 2
         if(x >= width):
-            x = 0
+            x = x%width
             y += 1
         n += 2
         if(n >= width):
-            n = 0
+            n = n%width
             m +=1
         if(m >= height or y >= height):
             print("Ya no quedan mas pixeles por procesar.")
