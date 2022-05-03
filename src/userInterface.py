@@ -1,6 +1,6 @@
 """
 Modulo encargado de generar la interfaz y de llamar las funciones necesrias casa que se oprime un botón.
-@author MarioLetepichia
+@author Aislinn-Liahut
 """
 from distutils import dir_util
 import tkinter
@@ -12,24 +12,21 @@ from imageProcessor import hideMessage, readMessage
 
 
 def contact():
-    messagebox.showinfo("How contact me", "liahutaislinn@ciencias.unam.mx \n")
-    #pongan sus corrreos
+    '''Despliega la informaciono de contacto de los programadores involucrados'''
+    messagebox.showinfo("How contact me", "liahutaislinn@ciencias.unam.mx  ivettegm@ciencias.unam.mx  marioletepichia@ciencias.unam.mx")
 
 def about():
-    messagebox.showinfo("About Program", "This program is a test")
+    '''Muestra informacion acerca del programa'''
+    messagebox.showinfo("About Program", "Programa enfocado en ocultar/revelar informacion a traves de la estenografia por LSB de una imagen.")
 
 def insert_img():
-
     '''Pregunta al usuario la dirección del imagen que contiene el mensaje y lo guarda'''
-
     global img_adress
     img_adress = filedialog.askopenfilename(title="open")
     print(img_adress)
 
    
-
 def insert_text():
-
     '''Pregunta al usuario la dirección del texto que contiene el mensaje lo muestra el texto, y lo guarda la dirección'''
     print("Text")
     global file_adress
@@ -41,9 +38,7 @@ def insert_text():
     text_box.insert(tkinter.END,lines)
     print(lines)
 
-
 def ocultar_procesar():
-
     '''Esconde el mensaje secreto en una imagen y procesa esa imagen nueva  con el mensaje oculto'''
     global dirname_adress
     name=textName.get("1.0","end")
@@ -68,9 +63,8 @@ def cargar_imagen_():
 
 
 def cargarMensajeSecreto():
+    '''Esconde el mensaje secreto en una imagen y procesa esa imagen nueva  con el mensaje oculto'''
 
-
-    ''' Apartir una imagen ya gruadad que contiene un mesnsaje secreto oculto , lo decifra y lo guarda en un nuevo archivo .txt'''
     name2=textName2.get("1.0","end")
     name2=name2.rstrip()
     if(name2 == ""):
@@ -80,8 +74,6 @@ def cargarMensajeSecreto():
     new_text_adress  = filedialog.askdirectory(initialdir="/",  title='selecciona donde deseas guardar el texto mas el nombre del archivo')
 
     new_text_adress = new_text_adress+"/"+name2
-    #mandar a llamar readMessage
-    # file_Secret = llamar metodo de mario pra obtener new file texto_develado
     
   
     readMessage(img_with_secret_adress,new_text_adress)
@@ -93,16 +85,12 @@ def cargarMensajeSecreto():
     text_box.pack()
     print(new_text_adress)
 
-    
-
-#creación de pantalla
 window = tkinter.Tk()
 window.title('Esteganografía por el método LSB')
 window.geometry("850x500")
 window.configure(background='dark turquoise')
 window.resizable(width= True, height= True)
 menubar = tkinter.Menu(window, background = "#000000", foreground="black" )
-#tabs
 tabControl= ttk.Notebook(window)
 tabOcultar = ttk.Frame(tabControl)
 tabControl.add(tabOcultar,text="Ocultar")
@@ -153,8 +141,6 @@ textName2.pack()
 btn_hide = tkinter.Button(tabDevelar, text="Develar mensaje",command=cargarMensajeSecreto)
 btn_hide.pack(side=tkinter.TOP)
 text_box =tkinter.Text(tabDevelar, height=10, width=30)
-# textExample2=tkinter.Text(tabOcultar, height=1.5, width=29)
-# textExample.pack()
 
 
 
