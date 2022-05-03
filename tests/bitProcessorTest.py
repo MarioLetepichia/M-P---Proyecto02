@@ -10,7 +10,6 @@ import bitProcessor as bit
 
 class BitsTest(unittest.TestCase):
     def testAsciiToBinary(self):
-        #Cuando recibe un int & bool
         a = 5
         try:
             if(bit.asciiToBinary(5) != bin(ord(a))):
@@ -19,7 +18,6 @@ class BitsTest(unittest.TestCase):
             raise AssertionError
         except ValueError:
             pass
-        #Una palabras; es decir, lista de binarios
         word = "Gatos#"
         wordBinaries = [71,97,116,111,115,35]
         binArray = []
@@ -31,13 +29,11 @@ class BitsTest(unittest.TestCase):
                 raise AssertionError
 
     def testModifyLSB(self):
-        #El binario recibido tiene que tener exactamente len()=10
         try:
             bit.modifyLSB("hola", "adios")
             raise AssertionError
         except ValueError:
             pass
-        #El LSB ya tiene el valor indicado por 'newLSB'
         numberEx = 186
         self.assertTrue(bit.modifyLSB(numberEx, '1') == numberEx + 1)
         numberEx = 185

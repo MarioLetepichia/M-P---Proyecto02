@@ -5,10 +5,10 @@ Modulo principal que corre el programa
 import sys
 import imageProcessor as png
 
-'''Funcion principal ejecutada al correr el programa; necesita acompanarse de parametros en la linea de 
-comando para funcionar correctamente
-'''
 def main():
+    '''Funcion principal ejecutada al correr el programa; necesita acompanarse de parametros en la linea de 
+    comando para funcionar correctamente
+    '''
     try:
         option = sys.argv[1]
         if(option == 'h'):

@@ -5,7 +5,8 @@ Modulo encargado de procesar la imagen para ocultar texto o descifrarlo
 from PIL import Image
 import bitProcessor as bit
 
-'''Lee un archivo imagen
+def readImage(img):
+    '''Lee un archivo imagen
 
     Parameters
     ----------
@@ -15,12 +16,14 @@ import bitProcessor as bit
     -------
     Objeto 'Image' con el cual se podra procesar a 'img'
 '''
-def readImage(img):
+
     if(img[len(img)- 4:len(img)] != '.png'):
         raise FileNotFoundError
     return Image.open(img)
 
-'''Oculta un texto en la imagen utilizando estenografia por LSB
+
+def hideMessage(text, img, resultImg):
+    '''Oculta un texto en la imagen utilizando estenografia por LSB
 
     Parameters
     ----------
@@ -28,7 +31,7 @@ def readImage(img):
     text: Direccion del texto a ocultar
     resultImg: Direccion donde se desea guardar la imagen resultante
 '''
-def hideMessage(text, img, resultImg):
+
     png = readImage(img)
     with open(text) as f:
         textList = f.readlines()
@@ -71,14 +74,15 @@ def hideMessage(text, img, resultImg):
     copy.putpixel((n,m), newPixels[1])
     copy.save(resultImg)
 
-'''Procesa una imagen para recuperar los LSB y generar un texto a partir de ellos.
+def readMessage(img, resultText):
+    '''Procesa una imagen para recuperar los LSB y generar un texto a partir de ellos.
 
     Parameters
     ----------
     img: Direccion de la imagen
     resultText: Direccion en la que se desea guardar el texto resultante
 '''
-def readMessage(img, resultText):
+
     text = ''
     png = readImage(img)
     width = png.width
@@ -111,7 +115,8 @@ def readMessage(img, resultText):
     file2write.write(text)
     file2write.close()
 
-'''Modifica los LSB de los bits dentro de los pixeles recibidos para almacenar
+def modifyPixels(p1, p2, symb):
+    '''Modifica los LSB de los bits dentro de los pixeles recibidos para almacenar
 un codigo ASCII. Para esto necesita dos pixeles
 
     Parameters
@@ -120,7 +125,7 @@ un codigo ASCII. Para esto necesita dos pixeles
     p2: Pixel #2 a procesar
     symb: Representacion binaria del codigo ASCII que se almanecera en 'p1' y 'p2'
 '''
-def modifyPixels(p1, p2, symb):
+
     red1 = bit.modifyLSB(p1[0], symb[0])
     green1 = bit.modifyLSB(p1[1], symb[1])
     blue1 = bit.modifyLSB(p1[2], symb[2])
