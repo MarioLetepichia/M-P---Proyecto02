@@ -47,12 +47,31 @@ sudo apt install python-pytest
 cd 
 ```
 
-2. Ejecuta el siguiente comando para correr el programa
+2. Ejecuta las siguientes instrucciones para correr el programa,hay dos opciones  
 
+### Correrarlo con la interfaz
 ```bash
-python3 src/main.py
+python3 src/userInterface.py
 ```
-3. Una vez hecho, se abrira una interfaz lista para usar el programa 
+Una vez hecho, se abrira una interfaz lista para usar el programa (siguie las indicaciones para el buen uso del programa)
+
+### Correrlo en la terminal compilación para _main.py_
+
+Si se quiere evitar lidiar con la interfaz gráfica puede optar por correr el archivo _main.py_ en su lugar; ubicandose en el directorio __Proyecto02__ y ejecutando el siguiente comando:
+
+````
+python3 src/main.py <opcion> [direcciones]
+````
+
+Dependiendo la opcion específicada las direcciones requeridas pueden variar, siendo la opción __h__ para ocultar un mensaje:
+```
+h <texto> <imagen> <imagenResultante>
+```
+Y usamos la opción __u__ para develar un mensaje oculto:
+````
+u <imagenDevelar> <textoResultante>
+````
+Como estos parámetros son requeridos al mismo tiempo que se ejecuta el programa, los archivos generados se guardan automáticamente en las direcciones proporcionadas.
 
 
 
